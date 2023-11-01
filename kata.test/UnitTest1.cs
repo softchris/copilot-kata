@@ -104,4 +104,79 @@ public class UnitTest1
         // Assert
         Assert.Equal(13, item.Quality);
     }
+
+    [Fact]
+    public void BackstagePassesQualityDropsToZeroAfterConcert()
+    {
+        // Arrange
+        var item = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 10);
+        var items = new List<Item> { item };
+        var gildedRose = new GildedRose(items);
+
+        // Act
+        gildedRose.UpdateQuality();
+
+        // Assert
+        Assert.Equal(0, item.Quality);
+    }
+
+    [Fact]
+    public void SulfurasQualityNeverChanges()
+    {
+        // Arrange
+        var item = new Item("Sulfuras, Hand of Ragnaros", 10, 80);
+        var items = new List<Item> { item };
+        var gildedRose = new GildedRose(items);
+
+        // Act
+        gildedRose.UpdateQuality();
+
+        // Assert
+        Assert.Equal(80, item.Quality);
+    }
+
+    [Fact]
+    public void ConjuredItemQualityDecreasesByTwoEachDay()
+    {
+        // Arrange
+        var item = new Item("Conjured Mana Cake", 10, 10);
+        var items = new List<Item> { item };
+        var gildedRose = new GildedRose(items);
+
+        // Act
+        gildedRose.UpdateQuality();
+
+        // Assert
+        Assert.Equal(8, item.Quality);
+    }
+
+    [Fact]
+    public void ConjuredItemQualityDecreasesByFourAfterSellByDate()
+    {
+        // Arrange
+        var item = new Item("Conjured Mana Cake", 0, 10);
+        var items = new List<Item> { item };
+        var gildedRose = new GildedRose(items);
+
+        // Act
+        gildedRose.UpdateQuality();
+
+        // Assert
+        Assert.Equal(6, item.Quality);
+    }
+
+    [Fact]
+    public void AgedBrieQualityIncreasesByTwoAfterSellByDate()
+    {
+        // Arrange
+        var item = new Item("Aged Brie", 0, 10);
+        var items = new List<Item> { item };
+        var gildedRose = new GildedRose(items);
+
+        // Act
+        gildedRose.UpdateQuality();
+
+        // Assert
+        Assert.Equal(12, item.Quality);
+    }
 }
