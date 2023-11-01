@@ -1,107 +1,146 @@
-namespace kata.Models;
-
-public class GildedRose
+namespace kata.Models
 {
-    IList<Item> Items;
-    public GildedRose(IList<Item> Items)
+    public abstract class Item
     {
-        this.Items = Items;
+        public string Name { get; set; }
+        public int SellIn { get; set; }
+        public int Quality { get; set; }
+
+        public Item(string name, int sellIn, int quality)
+        {
+            Name = name;
+            SellIn = sellIn;
+            Quality = quality;
+        }
+
+        public abstract void UpdateQuality();
     }
 
-    public void UpdateQuality()
+    public class NormalItem : Item
     {
-        for (var i = 0; i < Items.Count; i++)
+        public NormalItem(string name, int sellIn, int quality) : base(name, sellIn, quality)
         {
-            if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-            {
-                if (Items[i].Quality > 0)
-                {
-                    if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                    {
-                        Items[i].Quality = Items[i].Quality - 1;
-                    }
-                }
-            }
-            else
-            {
-                if (Items[i].Quality < 50)
-                {
-                    Items[i].Quality = Items[i].Quality + 1;
+        }
 
-                    if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (Items[i].SellIn < 11)
-                        {
-                            if (Items[i].Quality < 50)
-                            {
-                                Items[i].Quality = Items[i].Quality + 1;
-                            }
-                        }
-
-                        if (Items[i].SellIn < 6)
-                        {
-                            if (Items[i].Quality < 50)
-                            {
-                                Items[i].Quality = Items[i].Quality + 1;
-                            }
-                        }
-                    }
-                }
+        public override void UpdateQuality()
+        {
+            if (Quality > 0)
+            {
+                Quality--;
             }
 
-            if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+            SellIn--;
+
+            if (SellIn < 0 && Quality > 0)
             {
-                Items[i].SellIn = Items[i].SellIn - 1;
+                Quality--;
+            }
+        }
+    }
+
+    public class AgedBrie : Item
+    {
+        public AgedBrie(string name, int sellIn, int quality) : base(name, sellIn, quality)
+        {
+        }
+
+        public override void UpdateQuality()
+        {
+            if (Quality < 50)
+            {
+                Quality++;
             }
 
-            if (Items[i].SellIn < 0)
+            SellIn--;
+
+            if (SellIn < 0 && Quality < 50)
             {
-                if (Items[i].Name != "Aged Brie")
+                Quality++;
+            }
+        }
+    }
+
+    public class BackstagePasses : Item
+    {
+        public BackstagePasses(string name, int sellIn, int quality) : base(name, sellIn, quality)
+        {
+        }
+
+        public override void UpdateQuality()
+        {
+            if (Quality < 50)
+            {
+                Quality++;
+
+                if (SellIn < 11 && Quality < 50)
                 {
-                    if (Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (Items[i].Quality > 0)
-                        {
-                            if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                            {
-                                Items[i].Quality = Items[i].Quality - 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Items[i].Quality = Items[i].Quality - Items[i].Quality;
-                    }
+                    Quality++;
                 }
-                else
+
+                if (SellIn < 6 && Quality < 50)
                 {
-                    if (Items[i].Quality < 50)
-                    {
-                        Items[i].Quality = Items[i].Quality + 1;
-                    }
+                    Quality++;
                 }
+            }
+
+            SellIn--;
+
+            if (SellIn < 0)
+            {
+                Quality = 0;
+            }
+        }
+    }
+
+    public class Sulfuras : Item
+    {
+        public Sulfuras(string name, int sellIn, int quality) : base(name, sellIn, quality)
+        {
+        }
+
+        public override void UpdateQuality()
+        {
+            // Sulfuras never changes
+        }
+    }
+
+    public class ConjuredItem : Item
+    {
+        public ConjuredItem(string name, int sellIn, int quality) : base(name, sellIn, quality)
+        {
+        }
+
+        public override void UpdateQuality()
+        {
+            if (Quality > 0)
+            {
+                Quality -= 2;
+            }
+
+            SellIn--;
+
+            if (SellIn < 0 && Quality > 0)
+            {
+                Quality -= 2;
+            }
+        }
+    }
+
+    public class GildedRose
+    {
+        IList<Item> Items;
+
+        public GildedRose(IList<Item> Items)
+        {
+            this.Items = Items;
+        }
+
+        public void UpdateQuality()
+        {
+            foreach (var item in Items)
+            {
+                item.UpdateQuality();
             }
         }
     }
 }
-
-public class Item 
-{
-    public string Name { get; set; }
-    public int SellIn { get; set; }
-    public int Quality { get; set; }
-
-    public Item(string name, int sellIn, int quality)
-    {
-        Name = name;
-        SellIn = sellIn;
-        Quality = quality;
-    }
-
-    public override string ToString()
-    {
-        return this.Name + ", " + this.SellIn + ", " + this.Quality;
-    }
-}
-
-

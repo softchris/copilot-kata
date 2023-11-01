@@ -1,4 +1,4 @@
-using kata;
+using System.Collections.Generic;
 using Xunit;
 using kata.Models;
 
@@ -7,25 +7,25 @@ public class UnitTest1
     [Fact]
     public void Ensure_Quality()
     {
-        var items = new Item[] { new Item("brie", 4, 1) };
+        var items = new Item[] { new AgedBrie("Aged Brie", 4, 1) };
         var gildedRose = new GildedRose(items);
         gildedRose.UpdateQuality();
         
         // print out the item name and quality
         Console.WriteLine(items[0].Name + " " + items[0].Quality);
 
-        Assert.Equal(0, items[0].Quality);
+        Assert.Equal(2, items[0].Quality);
     }
 
     [Fact]
     public void Ensure_Sellin()
     {
-        var items = new Item[] { new Item("brie", 4, 1) };
+        var items = new Item[] { new AgedBrie("Aged Brie", 4, 1) };
         var gildedRose = new GildedRose(items);
         gildedRose.UpdateQuality();
         
         // print out the item name and quality
-        Console.WriteLine(items[0].Name + " " + items[0].Quality);
+        Console.WriteLine(items[0].Name + " " + items[0].SellIn);
 
         Assert.Equal(3, items[0].SellIn);
     }
@@ -34,7 +34,7 @@ public class UnitTest1
     public void NormalItemQualityDecreasesByOneEachDay()
     {
         // Arrange
-        var item = new Item ("Normal Item",10,10);
+        var item = new NormalItem ("Normal Item",10,10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -49,7 +49,7 @@ public class UnitTest1
     public void NormalItemQualityDecreasesByTwoAfterSellByDate()
     {
         // Arrange
-        var item = new Item ("Normal Item", 0, 10);
+        var item = new NormalItem ("Normal Item", 0, 10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -64,7 +64,7 @@ public class UnitTest1
     public void AgedBrieQualityIncreasesByOneEachDay()
     {
         // Arrange
-        var item = new Item ("Aged Brie",10,10);
+        var item = new AgedBrie ("Aged Brie",10,10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -79,7 +79,7 @@ public class UnitTest1
     public void BackstagePassesQualityIncreasesByTwoWhenTenDaysOrLessLeft()
     {
         // Arrange
-        var item = new Item("Backstage passes to a TAFKAL80ETC concert",10,10);
+        var item = new BackstagePasses("Backstage passes to a TAFKAL80ETC concert",10,10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -94,7 +94,7 @@ public class UnitTest1
     public void BackstagePassesQualityIncreasesByThreeWhenFiveDaysOrLessLeft()
     {
         // Arrange
-        var item = new Item ("Backstage passes to a TAFKAL80ETC concert",5,10);
+        var item = new BackstagePasses ("Backstage passes to a TAFKAL80ETC concert",5,10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -109,7 +109,7 @@ public class UnitTest1
     public void BackstagePassesQualityDropsToZeroAfterConcert()
     {
         // Arrange
-        var item = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 10);
+        var item = new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", 0, 10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -124,7 +124,7 @@ public class UnitTest1
     public void SulfurasQualityNeverChanges()
     {
         // Arrange
-        var item = new Item("Sulfuras, Hand of Ragnaros", 10, 80);
+        var item = new Sulfuras("Sulfuras, Hand of Ragnaros", 10, 80);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -139,7 +139,7 @@ public class UnitTest1
     public void ConjuredItemQualityDecreasesByTwoEachDay()
     {
         // Arrange
-        var item = new Item("Conjured Mana Cake", 10, 10);
+        var item = new ConjuredItem("Conjured Mana Cake", 10, 10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -154,7 +154,7 @@ public class UnitTest1
     public void ConjuredItemQualityDecreasesByFourAfterSellByDate()
     {
         // Arrange
-        var item = new Item("Conjured Mana Cake", 0, 10);
+        var item = new ConjuredItem("Conjured Mana Cake", 0, 10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
@@ -169,7 +169,7 @@ public class UnitTest1
     public void AgedBrieQualityIncreasesByTwoAfterSellByDate()
     {
         // Arrange
-        var item = new Item("Aged Brie", 0, 10);
+        var item = new AgedBrie("Aged Brie", 0, 10);
         var items = new List<Item> { item };
         var gildedRose = new GildedRose(items);
 
