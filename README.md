@@ -79,13 +79,31 @@ As you can see, there's more to do. Let's ask Copilot Chat.
 
 With a little luck, you should now have 100% test coverage on the *UpdateQuality* method which means we can move to our third step which is to refactor the code.
 
-
-## Step 3 - refactor
-
-TODO
-
 ### Solution 
 
 Check out the "01-add-tests" branch
 
 
+## Step 3 - refactor
+
+Select the *Models.cs* file and type the following prompt in Copilot Chat:
+
+```text
+improve this code, ensure every type of item have a dedicate class and an UpdateQuality method
+```
+
+Becase you're doing big changes now, you need to fix your *Program.cs* file and your test file as they both will have compilation errors.
+
+For each of those two mentioned files, open them and type the following prompt in Copilot Chat:
+
+```text
+change this code so it compiles, leverage the new item types
+```
+
+Now your code should compile, run the tests and check the coverage report. It should still be 100% on your *UpdateQuality* method.
+
+### Solution
+
+Check out the "02-refactor" branch
+
+That's it, you're done! Congrats, now you see how Copilot can help you refactor safely, by adding tests and ensuring you don't break anything and then by suggesting code to improve your codebase.
